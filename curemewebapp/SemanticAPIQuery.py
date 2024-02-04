@@ -2,9 +2,9 @@
 
 import requests
 import datetime
-from OpenAIHandler import getSummaryFromOpenai
+from .OpenAIHandler import getSummaryFromOpenai
 
-from SemanticQueryResponse import SemanticQueryApiResponse
+from .SemanticQueryResponse import SemanticQueryApiResponse
 
 
 
@@ -57,7 +57,7 @@ def GetAndRankPapers(keyword):
 
     for paper in lstPapers:
         H_Index = get_authors_h_index(paper.paperId)
-        print(H_Index)
+        #print(H_Index)
 
         #So as to not heavily bias towards papers with huge numbers of authors, going to tag a max of 5, and take the average of those 5
         avgWeight = 0
@@ -89,14 +89,14 @@ def GetAndRankPapers(keyword):
             #I made this number up, highest h-index ever is 300, very few people gonna break 150
         paper.CureMeRanking = avgWeight + min(paper.citationCount, 150)
         
-        print(str(paper.citationCount))
+        #print(str(paper.citationCount))
         
         """if paper.publicationDate != None:
             daysSincePublication = (datetime.datetime.now() - paper.publicationDate).days
             print(str(paper.publicationDate))
             print(str(daysSincePublication))"""
         
-        print(str(paper.CureMeRanking))
+        #print(str(paper.CureMeRanking))
 
         return sorted(lstPapers, key=lambda paper: paper.CureMeRanking, reverse=True)
 
@@ -130,15 +130,14 @@ def get_authors_h_index(paper_id: str) -> dict:
     
     return authors_h_index
 
-def main():
+def backendQuery(searchTerm):
     lstRankedPapers = GetAndRankPapers('ulcerative colitis')
-    getSummaryFromOpenai(lstRankedPapers)
-
-
+    return str(getSummaryFromOpenai(lstRankedPapers))
+    #getSummaryFromOpenai(lstRankedPapers)
     #do things
     
-
-main()
+if __name__ == "__main__":
+    backendQuery('ulcerative colitis')
 
 #Because researchers make even the simpliest things seem complicated.
 

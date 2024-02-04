@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Page</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title"><span class="cure">Cure</span><span class="me">Me</span></h1>
+        <!-- Added an id to the form -->
+        <form id="search-form" method="post" class="search-form">
+            {% csrf_token %}
+            <input type="text" name="search_param" placeholder="Enter search term..." class="search-bar">
+            <button type="submit" class="search-button">Search</button>
+        </form>
+        <!-- Added an id to the results div -->
+        <div id="results" class="results">
+            {{ result|safe }}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var form = document.getElementById("search-form");
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                var formData = new FormData(form);
+                fetch("/", {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest",
+                        "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Update the results div with the 'result' from the JSON response
+                    document.getElementById("results").innerHTML = data.result;
+                })
+                .catch(error => console.error('Error:', error));
+            };
+        });
+    </script>    
+</body>
+</html>
