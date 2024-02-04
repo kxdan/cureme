@@ -74,7 +74,7 @@ def GetAndRankPapers(keyword):
             avgWeight = total_sum/5
 
         else:
-            top_n = sorted(H_Index.items(), key=lambda x: x[1], reverse=True)[len(H_Index)]
+            top_n = sorted(H_Index.items(), key=lambda x: x[1], reverse=True)[len(H_Index)-1]
 
             # Extract only the numbers from the top 5 items
             top_n_numbers = [number for name, number in top_n]

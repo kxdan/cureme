@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f8ff; /* Light blue background */
+}
+
+.container {
+    text-align: center;
+    width: 80%;
+    max-width: 800px;
+}
+
+.title {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.cure {
+    color: #007bff; /* A calming blue */
+}
+
+.me {
+    color: #28a745; /* A soft green */
+}
+
+.search-form {
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    font-size: 18px;
+    padding: 10px 20px;
+    width: 50%;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    margin-right: -5px;
+}
+
+.search-button {
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #e8e8e8;
+}
+
+.tagline {
+    font-size: 18px; /* Adjust size as needed */
+    color: #777; /* A softer color than your main title for contrast */
+    margin-top: 10px; /* Add some space between the title and the tagline */
+    margin-bottom: 20px; /* Space before the search bar starts */
+    font-style: italic; /* Italicize to differentiate from other text */
+    text-align: center; /* Center align to match the title */
+}
+
+.loader {
+    border: 6px solid #f3f3f3; /* Light grey border */
+    border-top: 6px solid #3498db; /* Blue border */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+    margin: auto; /* Centers the loader */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.results {
+    margin-top: 20px;
+    text-align: left;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    background-color: #ffffff; /* White background for the text box */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 8px; /* Slightly rounded corners for a modern look */
+}
