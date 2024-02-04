@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Page</title>
+    <title>Cure Me, Together</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="icon" href="{% static 'logoscaled.ico' %}" type="image/x-icon">
 </head>
 <body>
     <div class="container">
         <h1 class="title"><span class="cure">Cure</span><span class="me">Me</span></h1>
+        <p class="tagline">Because researchers can make even simple things complicated.</p>
         <!-- Added an id to the form -->
         <form id="search-form" method="post" class="search-form">
             {% csrf_token %}
@@ -18,7 +20,7 @@
         </form>
         <div id="loading" class="loader" style="display: none;"></div>
         <!-- Added an id to the results div -->
-        <div id="results" class="results">
+        <div id="results" class="results" style="display: none;"></div>
             {{ result|safe }}
         </div>
     </div>
@@ -26,12 +28,15 @@
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         var form = document.getElementById("search-form");
+        var resultsDiv = document.getElementById("results"); // Get the results div
+
         form.onsubmit = function(e) {
             e.preventDefault();
             
-            // Show the loader
+            // Hide the results div and show the loader each time the form is submitted
+            resultsDiv.style.display = 'none';
             document.getElementById("loading").style.display = 'block';
-            
+
             var formData = new FormData(form);
             fetch("/", {
                 method: "POST",
@@ -47,7 +52,10 @@
                 document.getElementById("loading").style.display = 'none';
                 
                 // Update the results div with the 'result' from the JSON response
-                document.getElementById("results").innerHTML = data.result;
+                resultsDiv.innerHTML = data.result;
+
+                // Show the results div only after the response is received
+                resultsDiv.style.display = 'block';
             })
             .catch(error => {
                 console.error('Error:', error);

@@ -53,6 +53,15 @@ body {
     background-color: #e8e8e8;
 }
 
+.tagline {
+    font-size: 18px; /* Adjust size as needed */
+    color: #777; /* A softer color than your main title for contrast */
+    margin-top: 10px; /* Add some space between the title and the tagline */
+    margin-bottom: 20px; /* Space before the search bar starts */
+    font-style: italic; /* Italicize to differentiate from other text */
+    text-align: center; /* Center align to match the title */
+}
+
 .loader {
     border: 6px solid #f3f3f3; /* Light grey border */
     border-top: 6px solid #3498db; /* Blue border */

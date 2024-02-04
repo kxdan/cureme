@@ -3,7 +3,7 @@
 import requests
 import datetime
 from .OpenAIHandler import getSummaryFromOpenai
-
+from functools import lru_cache
 from .SemanticQueryResponse import SemanticQueryApiResponse
 
 
@@ -130,8 +130,9 @@ def get_authors_h_index(paper_id: str) -> dict:
     
     return authors_h_index
 
+@lru_cache(maxsize=100)
 def backendQuery(searchTerm):
-    lstRankedPapers = GetAndRankPapers('ulcerative colitis')
+    lstRankedPapers = GetAndRankPapers(searchTerm)
     return str(getSummaryFromOpenai(lstRankedPapers))
     #getSummaryFromOpenai(lstRankedPapers)
     #do things
