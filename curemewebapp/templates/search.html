@@ -16,6 +16,7 @@
             <input type="text" name="search_param" placeholder="Enter search term..." class="search-bar">
             <button type="submit" class="search-button">Search</button>
         </form>
+        <div id="loading" class="loader" style="display: none;"></div>
         <!-- Added an id to the results div -->
         <div id="results" class="results">
             {{ result|safe }}
@@ -23,27 +24,38 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var form = document.getElementById("search-form");
-            form.onsubmit = function(e) {
-                e.preventDefault();
-                var formData = new FormData(form);
-                fetch("/", {
-                    method: "POST",
-                    body: formData,
-                    headers: {
-                        "X-Requested-With": "XMLHttpRequest",
-                        "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Update the results div with the 'result' from the JSON response
-                    document.getElementById("results").innerHTML = data.result;
-                })
-                .catch(error => console.error('Error:', error));
-            };
-        });
+    document.addEventListener("DOMContentLoaded", function() {
+        var form = document.getElementById("search-form");
+        form.onsubmit = function(e) {
+            e.preventDefault();
+            
+            // Show the loader
+            document.getElementById("loading").style.display = 'block';
+            
+            var formData = new FormData(form);
+            fetch("/", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide the loader
+                document.getElementById("loading").style.display = 'none';
+                
+                // Update the results div with the 'result' from the JSON response
+                document.getElementById("results").innerHTML = data.result;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Hide the loader even if there's an error
+                document.getElementById("loading").style.display = 'none';
+            });
+        };
+    });
     </script>    
 </body>
 </html>
