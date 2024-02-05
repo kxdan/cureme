@@ -26,4 +26,5 @@ COPY . /app/
 RUN python manage.py collectstatic --noinput
 
 # Start Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "curemeproject.wsgi:application"]
+# Start Gunicorn, bind it to 0.0.0.0:80 (which listens on all interfaces, port 80)
+CMD ["gunicorn", "--bind", "0.0.0.0:80", "curemeproject.wsgi:application"]

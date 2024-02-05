@@ -41,7 +41,7 @@ def CallSemanticAPIByKeyword(keyword, counts):
             all_papers.extend(papers)  # Aggregate paper data from each call
             print(f"Batch {i+1}: Retrieved {len(papers)} papers.")
         else:
-            print(f"Failed to retrieve data for batch {i+1}, status code: {response.status_code}")
+            raise Exception(f"Unable to call Semantic Paper API {response.status_code}")
 
     # After all batches are processed, create an ApiResponse object
     aggregated_response = SemanticQueryApiResponse(total=total_results, papers=all_papers)
@@ -83,21 +83,10 @@ def GetAndRankPapers(keyword):
             total_sum = sum(top_n_numbers)
 
             avgWeight = total_sum/len(H_Index)
-
-        #paper.CureMeRanking = avgWeight
             
             #I made this number up, highest h-index ever is 300, very few people gonna break 150
         paper.CureMeRanking = avgWeight + min(paper.citationCount, 150)
         
-        #print(str(paper.citationCount))
-        
-        """if paper.publicationDate != None:
-            daysSincePublication = (datetime.datetime.now() - paper.publicationDate).days
-            print(str(paper.publicationDate))
-            print(str(daysSincePublication))"""
-        
-        #print(str(paper.CureMeRanking))
-
         return sorted(lstPapers, key=lambda paper: paper.CureMeRanking, reverse=True)
 
 
@@ -126,20 +115,18 @@ def get_authors_h_index(paper_id: str) -> dict:
             # Store the author's name and h-index in the dictionary
             authors_h_index[author['name']] = author.get('hIndex', 'N/A')
     else:
-        print(f"Failed to retrieve data, status code: {response.status_code}")
+        raise Exception(f"Unable to call Semantic Paper API for H-Indexes {response.status_code}")
     
     return authors_h_index
 
-@lru_cache(maxsize=100)
 def backendQuery(searchTerm):
     lstRankedPapers = GetAndRankPapers(searchTerm)
-    return str(getSummaryFromOpenai(lstRankedPapers))
-    #getSummaryFromOpenai(lstRankedPapers)
+    try:
+        return str(getSummaryFromOpenai(lstRankedPapers, searchTerm))
+    except Exception as error:
+        return str(error)
     #do things
     
-if __name__ == "__main__":
-    backendQuery('ulcerative colitis')
-
 #Because researchers make even the simpliest things seem complicated.
 
 # take each paper, get summarized versions of it, weight that by the author

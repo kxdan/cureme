@@ -6,7 +6,7 @@
     <title>Cure Me, Together</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'styles.css' %}">
-    <link rel="icon" href="{% static 'logoscaled.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 </head>
 <body>
     <div class="container">
@@ -26,6 +26,22 @@
     </div>
 
     <script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Check if this cookie name starts with the name we're looking for
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         var form = document.getElementById("search-form");
         var resultsDiv = document.getElementById("results"); // Get the results div
@@ -43,7 +59,7 @@
                 body: formData,
                 headers: {
                     "X-Requested-With": "XMLHttpRequest",
-                    "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    "X-CSRFToken": getCookie("csrftoken"),
                 },
             })
             .then(response => response.json())
